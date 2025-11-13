@@ -1,0 +1,28 @@
+---
+- name: Configure Web Servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+    - name: Deploy HTML page
+      copy:
+        content: "<h1>Web Node {{ inventory_hostname }}</h1>"
+        dest: /var/www/html/index.html
+
+- name: Configure DB Server
+  hosts: db
+  become: yes
+  tasks:
+    - name: Install MariaDB
+      apt:
+        name: mariadb-server
+        state: present
+        update_cache: yes
+    - name: Ensure MariaDB is started
+      service:
+        name: mariadb
+        state: started

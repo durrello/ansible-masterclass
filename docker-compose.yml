@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  node1:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: node1
+    ports:
+      - "2222:22"
+      - "8081:80"
+    volumes:
+      - ~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro
+      - ~/.ssh/id_rsa.pub:/home/devuser/.ssh/authorized_keys:ro
+    tty: true
+
+  node2:
+    build:
+      context: .
+      dockerfile: Dockerfile.node
+    container_name: node2
+    ports:
+      - "2223:22"
+      - "8082:80"
+    volumes:
+      - ~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys:ro
+      - ~/.ssh/id_rsa.pub:/home/devuser/.ssh/authorized_keys:ro
+    tty: true
+

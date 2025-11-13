@@ -1,0 +1,30 @@
+---
+- name: Configure Docker nodes with packages, files, and services
+  hosts: node
+  become: yes
+  tasks:
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create project directory
+      file:
+        path: /home/devuser/project
+        state: directory
+        mode: '0755'
+
+    - name: Deploy index.html
+      copy:
+        content: "<h1>Welcome to {{ inventory_hostname }}</h1>"
+        dest: /var/www/html/index.html
+
+    - name: Ensure nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: yes

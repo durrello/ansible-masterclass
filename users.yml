@@ -1,0 +1,16 @@
+---
+- name: Create user accounts
+  hosts: node
+  become: yes
+  vars:
+    users:
+      - name: alice
+        shell: /bin/bash
+      - name: bob
+        shell: /bin/bash
+  tasks:
+    - name: Create users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        shell: "{{ item.shell }}"
+      loop: "{{ users }}"

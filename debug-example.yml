@@ -1,0 +1,14 @@
+---
+- name: Debugging example
+  hosts: node
+  become: yes
+  vars:
+    my_var: "Hello from {{ inventory_hostname }}"
+  tasks:
+    - name: Print a message
+      debug:
+        msg: "My variable is: {{ my_var }}"
+
+    - name: Show all facts about the host
+      debug:
+        var: ansible_facts

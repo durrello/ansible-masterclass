@@ -1,0 +1,15 @@
+---
+- name: Install packages on Docker nodes
+  hosts: node
+  become: yes
+  tasks:
+    - name: Update APT cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install nginx and git
+      ansible.builtin.apt:
+        name:
+          - nginx
+          - git
+        state: present

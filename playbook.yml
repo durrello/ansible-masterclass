@@ -1,0 +1,15 @@
+---
+- name: <Play description>
+  hosts: <target group or host>
+  become: yes | no
+  vars:
+    <variable_name>: <value>
+  tasks:
+    - name: <Task 1>
+      <module>: <parameters>
+
+    - name: <Task 2>
+      <module>: <parameters>
+  handlers:
+    - name: <Handler task>
+      <module>: <parameters>

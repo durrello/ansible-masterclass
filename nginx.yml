@@ -1,0 +1,13 @@
+---
+- name: Basic setup
+  hosts: node
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+    - name: Start service
+      service:
+        name: nginx
+        state: started

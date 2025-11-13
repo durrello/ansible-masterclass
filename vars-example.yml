@@ -1,0 +1,14 @@
+---
+- name: Install packages using variables
+  hosts: node
+  become: yes
+  vars:
+    packages:
+      - nginx
+      - git
+      - curl
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ packages }}"
+        state: present

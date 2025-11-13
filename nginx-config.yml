@@ -1,0 +1,17 @@
+---
+- name: Configure NGINX web servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Copy custom index.html
+      ansible.builtin.copy:
+        content: "<h1>Hello from {{ inventory_hostname }}</h1>"
+        dest: /var/www/html/index.html
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

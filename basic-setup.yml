@@ -1,0 +1,35 @@
+---
+- name: Basic setup for Docker nodes
+  hosts: node
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Nginx and Git
+      apt:
+        name:
+          - nginx
+          - git
+        state: present
+
+    - name: Start and enable nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create sample homepage
+      copy:
+        content: |
+          <html>
+          <body>
+            <h1>Hello from {{ inventory_hostname }}</h1>
+          </body>
+          </html>
+        dest: /var/www/html/index.html
+

@@ -1,0 +1,6 @@
+---
+- name: Apply service_install role to all nodes
+  hosts: node
+  become: true
+  roles:
+    - service_install

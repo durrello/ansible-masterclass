@@ -1,0 +1,16 @@
+---
+- name: Manage files and directories
+  hosts: node
+  become: yes
+  tasks:
+    - name: Create a logs directory
+      ansible.builtin.file:
+        path: /home/devuser/logs
+        state: directory
+        mode: '0755'
+
+    - name: Create a sample file
+      ansible.builtin.file:
+        path: /home/devuser/logs/sample.txt
+        state: touch
+        mode: '0644'

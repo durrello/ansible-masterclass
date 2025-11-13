@@ -1,0 +1,40 @@
+---
+- name: Install and configure services on Docker nodes
+  hosts: node
+  become: yes
+  vars:
+    services:
+      - name: nginx
+        package: nginx
+        port: 80
+      - name: git
+        package: git
+
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ item.package }}"
+        state: present
+        update_cache: yes
+      loop: "{{ services }}"
+
+    - name: Ensure services are started (if applicable)
+      service:
+        name: "{{ item.name }}"
+        state: started
+        enabled: yes
+      loop: "{{ services }}"
+      when: item.name != "git"   # git is not a service
+
+    - name: Deploy sample HTML page for NGINX
+      copy:
+        content: "<h1>Welcome to {{ inventory_hostname }}!</h1>"
+        dest: /var/www/html/index.html
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

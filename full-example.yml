@@ -1,0 +1,39 @@
+---
+- name: Full setup with variables, loops, handlers
+  hosts: node
+  become: yes
+  vars:
+    packages:
+      - nginx
+      - git
+    users:
+      - name: alice
+        groups: sudo
+      - name: bob
+        groups: ""
+  tasks:
+    - name: Install packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: yes
+
+    - name: Add users
+      user:
+        name: "{{ item.name }}"
+        groups: "{{ item.groups | default(omit) }}"
+        append: yes
+      loop: "{{ users }}"
+
+    - name: Deploy index.html
+      copy:
+        content: "<h1>Welcome to {{ inventory_hostname }}</h1>"
+        dest: /var/www/html/index.html
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

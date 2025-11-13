@@ -1,0 +1,16 @@
+---
+- name: Create multiple users
+  hosts: node
+  become: yes
+  vars:
+    users:
+      - alice
+      - bob
+      - carol
+  tasks:
+    - name: Add users
+      user:
+        name: "{{ item }}"
+        state: present
+        shell: /bin/bash
+      loop: "{{ users }}"

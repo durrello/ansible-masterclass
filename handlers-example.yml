@@ -1,0 +1,17 @@
+---
+- name: Deploy website and handle NGINX
+  hosts: web
+  become: yes
+  tasks:
+    - name: Deploy index.html
+      copy:
+        content: "<h1>Hello from {{ inventory_hostname }}</h1>"
+        dest: /var/www/html/index.html
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
